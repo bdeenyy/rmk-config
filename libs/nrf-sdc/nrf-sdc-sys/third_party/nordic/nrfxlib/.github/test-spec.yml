@@ -1,0 +1,183 @@
+# This is the Jenkins ci variant of the .github/labler.yaml
+"CI-iot-zephyr-lwm2m-test":
+  - any:
+      - "nrf_modem/**/*"
+      - "!nrf_modem/doc/**/*"
+      - "!nrf_modem/*.rst"
+  - "crypto/nrf_oberon/**/*"
+
+"CI-iot-samples-test":
+  - any:
+      - "nrf_modem/**/*"
+      - "!nrf_modem/doc/**/*"
+      - "!nrf_modem/*.rst"
+
+"CI-iot-libraries-test":
+  - any:
+      - "nrf_modem/**/*"
+      - "!nrf_modem/doc/**/*"
+      - "!nrf_modem/*.rst"
+
+"CI-lwm2m-test":
+  - any:
+      - "nrf_modem/**/*"
+      - "!nrf_modem/doc/**/*"
+      - "!nrf_modem/*.rst"
+
+"CI-tfm-test":
+  - any:
+      - "crypto/**/*"
+      - "!crypto/doc/**/*"
+      - "!crypto/*.rst"
+
+"CI-ble-test":
+  - "softdevice_controller/include/**/*"
+  - "softdevice_controller/lib/**/*"
+  - "mpsl/include/**/*"
+  - "mpsl/lib/**/*"
+
+"CI-ble-samples-test":
+  - "softdevice_controller/include/**/*"
+  - "softdevice_controller/lib/**/*"
+  - "mpsl/include/**/*"
+  - "mpsl/lib/**/*"
+
+"CI-mesh-test": null
+
+"CI-desktop-test": null
+
+"CI-crypto-test":
+  - any:
+      - "crypto/**/*"
+      - "!crypto/doc/**/*"
+      - "!crypto/*.rst"
+
+"CI-rs-test":
+  - "mpsl/CMakeLists.txt"
+  - "mpsl/include/**/*"
+  - "mpsl/lib/**/*"
+  - "softdevice_controller/CMakeLists.txt"
+  - "softdevice_controller/include/**/*"
+  - "softdevice_controller/lib/**/*"
+  - "nrf_802154/**/*"
+
+"CI-fem-test":
+  - "mpsl/CMakeLists.txt"
+  - "mpsl/include/**/*"
+  - "mpsl/lib/**/*"
+  - "softdevice_controller/CMakeLists.txt"
+  - "softdevice_controller/include/**/*"
+  - "softdevice_controller/lib/**/*"
+  - "nrf_802154/**/*"
+
+"CI-thread-test":
+  - "mpsl/include/**/*"
+  - "mpsl/lib/**/*"
+  - "nrf_802154/driver/**/*"
+  - "nrf_802154/serialization/**/*"
+  - "nrf_802154/sl/**/*"
+  - any:
+      - "crypto/**/*"
+      - "!crypto/doc/**/*"
+      - "!crypto/*.rst"
+  - any:
+    - "openthread/**/*"
+    - "!openthread/*.rst"
+    - "!openthread/doc/**/*"
+
+"CI-nfc-test":
+  - any:
+      - "nfc/**/*"
+      - "!nfc/doc/**/*"
+      - "!nfc/*.rst"
+
+"CI-matter-test":
+  - any:
+    - "openthread/**/*"
+    - "!openthread/*.rst"
+    - "!openthread/doc/**/*"
+  - "nrf_802154/driver/**/*"
+  - "nrf_802154/serialization/**/*"
+  - "nrf_802154/sl/**/*"
+  - "nrf_wifi/**/*"
+  - any:
+      - "crypto/**/*"
+      - "!crypto/doc/**/*"
+      - "!crypto/*.rst"
+
+"CI-find-my-test":
+  - any:
+      - "nfc/**/*"
+      - "!nfc/doc/**/*"
+      - "!nfc/*.rst"
+  - any:
+      - "crypto/**/*"
+      - "!crypto/doc/**/*"
+      - "!crypto/*.rst"
+
+"CI-gazell-test":
+  - "gzll/CMakeLists.txt"
+  - "gzll/lib/**/*"
+  - "gzll/include/**/*"
+
+"CI-rpc-test":
+  - any:
+      - "nrf_rpc/**/*"
+      - "!nrf_rpc/doc/**/*"
+      - "!nrf_rpc/*.rst"
+
+"CI-modemshell-test":
+  - any:
+      - "nrf_modem/**/*"
+      - "!nrf_modem/doc/**/*"
+      - "!nrf_modem/*.rst"
+
+"CI-positioning-test":
+  - any:
+      - "nrf_modem/**/*"
+      - "!nrf_modem/doc/**/*"
+      - "!nrf_modem/*.rst"
+
+"CI-cloud-test":
+  - any:
+      - "nrf_modem/**/*"
+      - "!nrf_modem/doc/**/*"
+      - "!nrf_modem/*.rst"
+  - any:
+      - "nrf_rpc/**/*"
+      - "!nrf_rpc/doc/**/*"
+      - "!nrf_rpc/*.rst"
+  - any:
+      - "crypto/**/*"
+      - "!crypto/doc/**/*"
+      - "!crypto/*.rst"
+
+"CI-wifi":
+  - "nrf_wifi/**/*"
+  - any:
+      - "crypto/**/*"
+      - "!crypto/doc/**/*"
+      - "!crypto/*.rst"
+
+"CI-audio-test":
+  - "lc3/**/*"
+  - "softdevice_controller/CMakeLists.txt"
+  - "softdevice_controller/include/**/*"
+  - "softdevice_controller/lib/**/*"
+
+"CI-dfu-test":
+  - "softdevice_controller/CMakeLists.txt"
+  - "softdevice_controller/include/**/*"
+  - "softdevice_controller/lib/**/*"
+  - "mpsl/CMakeLists.txt"
+  - "mpsl/include/**/*"
+  - "mpsl/lib/**/*"
+  - "nrf_rpc/CMakeLists.txt"
+  - "nrf_rpc/include/**/*"
+  - "nrf_rpc/nrf_rpc*"
+
+"CI-ps-test":
+  - any:
+      - "nrf_rpc/**/*"
+      - "!nrf_rpc/doc/**/*"
+      - "!nrf_rpc/*.rst"

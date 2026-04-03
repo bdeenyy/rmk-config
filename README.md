@@ -2,6 +2,8 @@
 
 RMK BLE split firmware for Ergohaven keyboards and trackballs (nRF52840).
 
+This repo also contains a Lily58 Pro target adapted for nice!nano / nRF52840 with Vial support in `keyboards/lily58pro`.
+
 ## Supported Devices
 
 ### Keyboards (BLE split)
@@ -13,6 +15,7 @@ RMK BLE split firmware for Ergohaven keyboards and trackballs (nRF52840).
 | OP36        | 3×5 + 3 thumb  | —        | —         |
 | Velvet      | 4×6 + 5 thumb  | —        | —         |
 | Velvet UI   | 4×6 + 5 thumb  | —        | PMW3610   |
+| Lily58 Pro  | 4×6 + 4 thumb + inner keys | — | — |
 
 ### Trackballs (standalone BLE)
 
@@ -31,7 +34,7 @@ RMK BLE split firmware for Ergohaven keyboards and trackballs (nRF52840).
 ## Building
 
 ```sh
-cd keyboards/k03
+cd keyboards/lily58pro
 cargo build --release --bin central
 cargo build --release --bin peripheral
 ```

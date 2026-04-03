@@ -1,0 +1,101 @@
+.. ### This page lists links used in the nrfxlib docs.
+       Links are grouped by source URL if three or more have the same source URL.
+       Otherwise, they are placed in "Source: other".
+       Links not separated by blank line are related to one another.
+
+.. ### Source: github.com
+
+.. _`nrfx`: https://github.com/NordicSemiconductor/nrfx/
+
+.. _`sdk-nrfxlib`: https://github.com/nrfconnect/sdk-nrfxlib
+
+.. _`TinyCBOR`: https://github.com/zephyrproject-rtos/tinycbor
+
+.. _`zcbor`: https://github.com/NordicSemiconductor/zcbor
+
+.. _`OpenAMP`: https://github.com/OpenAMP/open-amp/
+
+.. ### Source: www.nordicsemi.com
+
+.. _`nRF9160 AT Commands Reference Guide`: https://docs.nordicsemi.com/bundle/ref_at_commands/page/REF/at_commands/intro_nrf9160.html
+.. _`nRF91x1 AT Commands Reference Guide`: https://docs.nordicsemi.com/bundle/ref_at_commands_nrf91x1/page/REF/at_commands/intro_nrf91x1.html
+.. _`Selecting UICC slot %CSUS`: https://docs.nordicsemi.com/bundle/ref_at_commands/page/REF/at_commands/access_uicc/csus.html
+.. _`nRF91x1 selecting UICC slot %CSUS`: https://docs.nordicsemi.com/bundle/ref_at_commands_nrf91x1/page/REF/at_commands/access_uicc/csus.html
+.. _`Packet domain commands`: https://docs.nordicsemi.com/bundle/ref_at_commands/page/REF/at_commands/packet_domain/packet_domain.html
+.. _`nRF91x1 packet Domain AT commands`: https://docs.nordicsemi.com/bundle/ref_at_commands_nrf91x1/page/REF/at_commands/packet_domain/packet_domain.html
+.. _`Credential storage management %CMNG`: https://docs.nordicsemi.com/bundle/ref_at_commands/page/REF/at_commands/security/cmng.html
+.. _`nRF91x1 credential storage management %CMNG`: https://docs.nordicsemi.com/bundle/ref_at_commands_nrf91x1/page/REF/at_commands/security/cmng.html
+.. _`Modem trace activation %XMODEMTRACE`: https://docs.nordicsemi.com/bundle/ref_at_commands/page/REF/at_commands/mob_termination_ctrl_status/xmodemtrace.html
+.. _`nRF91x1 modem trace activation %XMODEMTRACE`: https://docs.nordicsemi.com/bundle/ref_at_commands_nrf91x1/page/REF/at_commands/mob_termination_ctrl_status/xmodemtrace.html
+.. _`Revision Identification +CGMR`: https://docs.nordicsemi.com/bundle/ref_at_commands_nrf91x1/page/REF/at_commands/general/cgmr.html
+
+.. _`Cellular Monitor`: https://docs.nordicsemi.com/bundle/nrf-connect-cellularmonitor/page/managing_credentials.html
+.. _`nRF Connect Serial Terminal`: https://docs.nordicsemi.com/bundle/nrf-connect-serial-terminal/page/index.html
+
+.. _`nRF21540`: https://www.nordicsemi.com/Products/Low-power-short-range-wireless/nRF21540
+
+.. _`Thread CIDs for nRF5340`: https://docs.nordicsemi.com/bundle/comp_matrix_nrf5340/page/COMP/nrf5340/nrf5340_thread_cids.html
+.. _`Thread CIDs for nRF52840`: https://docs.nordicsemi.com/bundle/comp_matrix_nrf52840/page/COMP/nrf52840/nrf52840_thread_cids.html
+.. _`Thread CIDs for nRF52833`: https://docs.nordicsemi.com/bundle/comp_matrix_nrf52833/page/COMP/nrf52833/nrf52833_thread_cids.html
+
+.. _`coex interface of nRF9160`: https://docs.nordicsemi.com/bundle/ps_nrf9160/page/ip/radio_lte/doc/magpio_if.html
+
+.. _`nRF9161 DECT NR+ product specification`:  https://docs.nordicsemi.com/bundle/ps_nrf9161/page/dect.html
+.. _`nRF9151 DECT NR+ product specification`:  https://docs.nordicsemi.com/bundle/ps_nrf9151/page/dect.html
+
+.. _`nRF9160 modem firmware zip file`: https://www.nordicsemi.com/Products/Low-power-cellular-IoT/nRF9160/Download#0B34B59935AF4AFCB7AB93E9646C1F53
+.. _`nRF91x1 LTE firmware zip file`: https://www.nordicsemi.com/Products/nRF9161/Download#636701B052474E5A8EB903C56678D26E
+.. _`nRF9160 modem TLS cipher suites`: https://www.nordicsemi.com/Products/Low-power-cellular-IoT/nRF9160/Download#infotabs
+.. _`nRF91x1 modem TLS cipher suites`: https://www.nordicsemi.com/Products/nRF9161/Download?lang=en#infotabs
+
+.. _`nPM1300 Evaluation Kit`: https://docs.nordicsemi.com/bundle/ug_npm1300_ek/page/UG/nPM1300_EK/intro.html
+
+.. _`Zigbee CIDs for nRF5340`: https://docs.nordicsemi.com/bundle/comp_matrix_nrf5340/page/COMP/nrf5340/nrf5340_zigbee_cids.html
+.. _`Zigbee CIDs for nRF52840`: https://docs.nordicsemi.com/bundle/comp_matrix_nrf52840/page/COMP/nrf52840/nrf52840_zigbee_cids.html
+.. _`Zigbee CIDs for nRF52833`: https://docs.nordicsemi.com/bundle/comp_matrix_nrf52833/page/COMP/nrf52833/nrf52833_zigbee_cids.html
+
+.. ### Source: wikipedia
+
+.. _`Global navigation satellite system (GNSS)`: https://en.wikipedia.org/wiki/Satellite_navigation
+
+.. _`A-GNSS`: https://en.wikipedia.org/wiki/Assisted_GNSS
+
+.. _`A-GPS`: https://en.wikipedia.org/wiki/Assisted_GPS
+
+.. _`IANA`: https://en.wikipedia.org/wiki/Internet_Assigned_Numbers_Authority
+
+.. _`SIM card`: https://en.wikipedia.org/wiki/SIM_card
+
+.. ### Source: other
+
+.. _`Zephyr`: https://www.zephyrproject.org
+
+.. _`Bluetooth® LE Audio specifications`: https://www.bluetooth.com/learn-about-bluetooth/recent-enhancements/le-audio/le-audio-specifications/
+
+.. _`certification policy`: https://zigbeealliance.org/wp-content/uploads/2021/04/07-4842-13-Zigbee-certification-policy.pdf
+
+.. _`Mbed TLS backend`: https://tls.mbed.org/
+
+.. _`NMEA`: https://www.gpsworld.com/what-exactly-is-gps-nmea-data/
+
+.. _`NMEA report sample`: http://aprs.gids.nl/nmea/#gsa
+
+.. _`Bluetooth Core Specification`: https://www.bluetooth.com/specifications/specs/core-specification-6-0/
+
+.. _`Bluetooth Specifications and Documents`: https://www.bluetooth.com/specifications/specs/
+
+.. _`Appropriate Language Mapping Table`: https://www.bluetooth.com/language-mapping/Appropriate-Language-Mapping-Table
+
+.. _`nRF Connect for Desktop`: https://www.nordicsemi.com/Products/Development-tools/nRF-Connect-for-Desktop
+
+.. _`Wireshark`: https://www.wireshark.org/
+
+.. _`3GPP TS 24.301 Technical Specification`: https://www.3gpp.org/DynaReport/24301.htm
+
+.. _`ETSI EN 301 406-2`: https://etsi.org/deliver/etsi_en/301400_301499/30140602/03.01.01_60/en_30140602v030101p.pdf
+
+.. _`ETSI TS 103 636-2`: https://www.etsi.org/deliver/etsi_ts/103600_103699/10363602/01.03.01_60/ts_10363602v010301p.pdf
+
+.. _`47 CFR Part 15`: https://www.ecfr.gov/current/title-47/part-15
+
+.. _`47 CFR Part 15.323`: https://www.ecfr.gov/current/title-47/section-15.323

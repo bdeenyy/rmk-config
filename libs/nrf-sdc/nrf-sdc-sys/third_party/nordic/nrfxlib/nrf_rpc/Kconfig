@@ -1,0 +1,58 @@
+#
+# Copyright (c) 2020 Nordic Semiconductor
+#
+# SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
+#
+
+menuconfig NRF_RPC
+	bool "nRF RPC (Remote Procedure Call) library"
+	help
+	  Enable nRF RPC (Remote Procedure Call) library
+
+if NRF_RPC
+
+config NRF_RPC_CBOR
+	bool "Add CBOR layer"
+	default y
+	select ZCBOR
+	select ZCBOR_STOP_ON_ERROR
+	help
+	  Adds API that helps use of CBOR library for data serialization.
+
+config NRF_RPC_ZCBOR_BACKUPS
+	int "Number of ZCBOR backups"
+	default 0
+	help
+	  ZCBOR needs to take a backup for each list/map. The application should
+	  configure this to be the maximum list depth expected in the CBOR data.
+	  E.g., if we have a nested list (2 levels deep) then ZCBOR will need 2
+	  backup states.
+
+config NRF_RPC_CMD_CTX_POOL_SIZE
+	int "Number of available context structures for commands"
+	default 8
+	range 2 32
+	help
+	  nRF RPC need to store some data to handle commands. Pool of contexts
+	  is created to avoid dynamic memory allocation. Setting this value too
+	  low will cause unnecessary waits for available context. Minimum value
+	  that is ensured to work without waiting is the sum of the number of
+	  threads in both local and remote pool.
+
+config NRF_RPC_GROUP_INIT_WAIT_TIME
+	int "Group initialization timeout in milliseconds"
+	default 1000
+	help
+	  The number of milliseconds to wait for the remote cores to send group
+	  init packets with destination group IDs. Set to -1 to wait forever.
+
+config NRF_RPC_THREAD_POOL_SIZE
+	int "Number of threads in local thread pool"
+	default 3
+	range 1 32
+	help
+	  Thread pool is used to execute commands and events that arrived from
+	  the remote side. If there is no available threads then remote side
+	  will wait.
+
+endif # NRF_RPC

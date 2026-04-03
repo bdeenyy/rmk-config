@@ -1,0 +1,52 @@
+#
+# Copyright (c) 2023 Nordic Semiconductor
+#
+# SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
+#
+menu "nrf_modem (Modem library)"
+
+# Selected by NRF_MODEM_LIB in sdk-nrf
+config NRF_MODEM
+	bool
+	select NRFX_IPC if SOC_SERIES_NRF91X
+	select REQUIRES_FULL_LIBC
+
+if NRF_MODEM
+
+choice NRF_MODEM_BUILD_STRATEGY
+	prompt "Build strategy"
+
+config NRF_MODEM_LINK_BINARY
+	bool "Link binary"
+
+endchoice # NRF_MODEM_BUILD_STRATEGY
+
+choice
+	prompt "Variant"
+	help
+	  Choose which binary variant to link with: cellular or DECT PHY.
+
+config NRF_MODEM_LINK_BINARY_CELLULAR
+	bool "Cellular"
+
+config NRF_MODEM_LINK_BINARY_DECT_PHY
+	select EXPERIMENTAL
+	bool "DECT PHY"
+
+endchoice
+
+config NRF_MODEM_LOG
+	bool "Link binary with logs"
+	help
+	  Links the application with the library version capable of emitting logs.
+	  This increases the final size of the application.
+
+endif # NRF_MODEM
+
+config NRF_MODEM_SHMEM_CTRL_SIZE
+	hex
+	default 0x1000 if (SOC_SERIES_NRF92X && NRF_MODEM_LINK_BINARY_CELLULAR)
+	default 0x728 if (SOC_SERIES_NRF91X && NRF_MODEM_LINK_BINARY_DECT_PHY)
+	default 0x4e8
+
+endmenu # nrf_modem
