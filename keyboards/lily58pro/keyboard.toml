@@ -78,9 +78,9 @@ row_offset = 0
 col_offset = 0
 
 [split.central.matrix]
-# Based on the official ZMK Lily58 nice!nano mapping.
-row_pins = ["P0_02", "P1_15", "P1_13", "P1_11", "P0_10"]
-col_pins = ["P0_24", "P1_00", "P0_11", "P1_04", "P1_06", "P0_22"]
+# Pin values taken from the user's previously working D:\Code\RMK project.
+row_pins = ["P0_24", "P1_00", "P0_11", "P1_04", "P1_06"]
+col_pins = ["P0_02", "P1_15", "P1_13", "P1_11", "P0_10", "P0_09"]
 
 [[split.peripheral]]
 rows = 5
@@ -89,8 +89,8 @@ row_offset = 0
 col_offset = 6
 
 [split.peripheral.matrix]
-row_pins = ["P0_02", "P1_15", "P1_13", "P1_11", "P0_10"]
-col_pins = ["P0_22", "P1_06", "P1_04", "P0_11", "P1_00", "P0_24"]
+row_pins = ["P0_24", "P1_00", "P0_11", "P1_04", "P1_06"]
+col_pins = ["P0_09", "P0_10", "P1_11", "P1_13", "P1_15", "P0_02"]
 
 [rmk]
 split_peripherals_num = 1
