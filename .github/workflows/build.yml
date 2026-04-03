@@ -1,4 +1,4 @@
-name: Build Ergohaven RMK Firmware
+name: Build Lily58 Pro RMK Firmware
 
 on:
   push:
@@ -8,12 +8,8 @@ on:
 
 jobs:
   build:
-    name: Build ${{ matrix.keyboard }} firmware
+    name: Build lily58pro firmware
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        keyboard: [k03, imperial44, op36, velvet, velvet_ui, lily58pro]
 
     steps:
       - name: Checkout
@@ -35,9 +31,9 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-          key: ${{ runner.os }}-cargo-${{ matrix.keyboard }}-${{ hashFiles('keyboards/${{ matrix.keyboard }}/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-lily58pro-${{ hashFiles('keyboards/lily58pro/Cargo.lock') }}
           restore-keys: |
-            ${{ runner.os }}-cargo-${{ matrix.keyboard }}-
+            ${{ runner.os }}-cargo-lily58pro-
             ${{ runner.os }}-cargo-
 
       - name: Install flip-link
@@ -59,110 +55,41 @@ jobs:
           chmod +x uf2conv.py
 
       - name: Build Central
-        working-directory: keyboards/${{ matrix.keyboard }}
+        working-directory: keyboards/lily58pro
         env:
           BINDGEN_EXTRA_CLANG_ARGS: "--sysroot=/usr/lib/arm-none-eabi --target=arm-none-eabi -I/usr/lib/arm-none-eabi/include -I/usr/lib/gcc/arm-none-eabi/13.2.1/include"
           RUST_MIN_STACK: "16777216"
         run: cargo build --release --bin central
 
       - name: Build Peripheral
-        working-directory: keyboards/${{ matrix.keyboard }}
+        working-directory: keyboards/lily58pro
         env:
           BINDGEN_EXTRA_CLANG_ARGS: "--sysroot=/usr/lib/arm-none-eabi --target=arm-none-eabi -I/usr/lib/arm-none-eabi/include -I/usr/lib/gcc/arm-none-eabi/13.2.1/include"
           RUST_MIN_STACK: "16777216"
         run: cargo build --release --bin peripheral
 
       - name: Convert to UF2
-        working-directory: keyboards/${{ matrix.keyboard }}
+        working-directory: keyboards/lily58pro
         run: |
           arm-none-eabi-objcopy -O binary \
             target/thumbv7em-none-eabihf/release/central left.bin
           python3 ../../uf2conv.py left.bin \
             --base 0x26000 --family 0xADA52840 \
-            --output ${{ matrix.keyboard }}_left.uf2
+            --output lily58pro_left.uf2
 
           arm-none-eabi-objcopy -O binary \
             target/thumbv7em-none-eabihf/release/peripheral right.bin
           python3 ../../uf2conv.py right.bin \
             --base 0x26000 --family 0xADA52840 \
-            --output ${{ matrix.keyboard }}_right.uf2
+            --output lily58pro_right.uf2
 
       - name: Upload firmware
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.keyboard }}
+          name: lily58pro
           path: |
-            keyboards/${{ matrix.keyboard }}/${{ matrix.keyboard }}_left.uf2
-            keyboards/${{ matrix.keyboard }}/${{ matrix.keyboard }}_right.uf2
-          retention-days: 30
-
-  build-trackball:
-    name: Build ${{ matrix.keyboard }} firmware
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - keyboard: trackball_v30
-            output_name: trackball_mini_v3.0
-          - keyboard: trackball_v31
-            output_name: trackball_mini_v3.1
-          - keyboard: trackball_royale
-            output_name: trackball_royale
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install ARM toolchain
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi clang libclang-dev
-
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: thumbv7em-none-eabihf
-
-      - name: Cache cargo registry
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-          key: ${{ runner.os }}-cargo-${{ matrix.keyboard }}-${{ hashFiles('keyboards/${{ matrix.keyboard }}/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cargo-${{ matrix.keyboard }}-
-
-      - name: Install flip-link
-        run: cargo install flip-link --locked
-
-      - name: Download uf2conv script
-        run: |
-          curl -fL https://raw.githubusercontent.com/microsoft/uf2/master/utils/uf2conv.py -o uf2conv.py
-          curl -fL https://raw.githubusercontent.com/microsoft/uf2/master/utils/uf2families.json -o uf2families.json
-
-      - name: Build keyboard
-        working-directory: keyboards/${{ matrix.keyboard }}
-        env:
-          BINDGEN_EXTRA_CLANG_ARGS: "--sysroot=/usr/lib/arm-none-eabi --target=arm-none-eabi -I/usr/lib/arm-none-eabi/include -I/usr/lib/gcc/arm-none-eabi/13.2.1/include"
-          RUST_MIN_STACK: "16777216"
-        run: cargo build --release --bin keyboard
-
-      - name: Convert to UF2
-        working-directory: keyboards/${{ matrix.keyboard }}
-        run: |
-          arm-none-eabi-objcopy -O binary \
-            target/thumbv7em-none-eabihf/release/keyboard keyboard.bin
-          python3 ../../uf2conv.py keyboard.bin \
-            --base 0x26000 --family 0xADA52840 \
-            --output ${{ matrix.output_name }}.uf2
-
-      - name: Upload firmware
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.output_name }}
-          path: keyboards/${{ matrix.keyboard }}/${{ matrix.output_name }}.uf2
+            keyboards/lily58pro/lily58pro_left.uf2
+            keyboards/lily58pro/lily58pro_right.uf2
           retention-days: 30
 
   build-settings-reset:

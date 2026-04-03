@@ -1,37 +1,70 @@
-# Ergohaven RMK Firmware
+# RMK Config for Lily58 Pro
 
-RMK BLE split firmware for Ergohaven keyboards and trackballs (nRF52840).
+RMK BLE split firmware for `Lily58 Pro` on `nice!nano v2` / `nRF52840`.
 
-This repo also contains a Lily58 Pro target adapted for nice!nano / nRF52840 with Vial support in `keyboards/lily58pro`.
+This repository is focused on one keyboard target:
 
-## Supported Devices
+- `Lily58 Pro`
+- split BLE
+- `Vial` support
+- GitHub Actions build with `.uf2` artifacts for both halves
 
-### Keyboards (BLE split)
+## Hardware
 
-| Keyboard    | Layout         | Encoders | Trackball |
-|-------------|----------------|----------|-----------|
-| K:03        | 5×6 + 5 thumb  | 3+3      | —         |
-| Imperial44  | 4×6 + 3 thumb  | 1+1      | —         |
-| OP36        | 3×5 + 3 thumb  | —        | —         |
-| Velvet      | 4×6 + 5 thumb  | —        | —         |
-| Velvet UI   | 4×6 + 5 thumb  | —        | PMW3610   |
-| Lily58 Pro  | 4×6 + 4 thumb + inner keys | — | — |
+- Keyboard: `Lily58 Pro`
+- MCU: `nice!nano v2`
+- Chip: `nRF52840`
+- Bootloader: Adafruit UF2 / `nice!nano`
+- Connection: Bluetooth Low Energy
 
-### Trackballs (standalone BLE)
+## Current Status
 
-| Device              | Buttons | Modes                          |
-|---------------------|---------|--------------------------------|
-| Trackball Royale     | 6       | Normal, Scroll, Sniper, Adjust |
-| Trackball Mini v3.1 | 4       | Normal, Scroll, Sniper, Adjust |
-| Trackball Mini v3.0 | 2       | Normal, Scroll, Sniper, Adjust |
+The firmware target lives in `keyboards/lily58pro`.
 
-### Tools
+Implemented in the current version:
 
-| Tool           | Description                              |
-|----------------|------------------------------------------|
-| settings_reset | Erases keymap and BLE bonds, resets to bootloader |
+- split BLE firmware
+- `central` and `peripheral` binaries
+- `Vial` definition
+- GitHub Actions build
+- battery ADC configuration
 
-## Building
+Not included yet:
+
+- OLED support
+
+Important:
+
+- matrix pins are currently carried over from an earlier local RMK attempt
+- they are build-verified, but still need real hardware validation on the keyboard
+
+## Repository Layout
+
+- `keyboards/lily58pro` - keyboard firmware target
+- `libs/nrf-sdc` - vendored BLE stack dependency required for reproducible builds
+- `.github/workflows/build.yml` - CI build workflow
+
+## Build on GitHub
+
+Every push to `main` triggers GitHub Actions.
+
+The workflow builds:
+
+- `central` -> left half
+- `peripheral` -> right half
+
+Artifacts are uploaded as:
+
+- `lily58pro_left.uf2`
+- `lily58pro_right.uf2`
+
+Actions page:
+
+- [GitHub Actions](https://github.com/bdeenyy/rmk-config/actions)
+
+## Local Build
+
+Build from the keyboard directory:
 
 ```sh
 cd keyboards/lily58pro
@@ -39,20 +72,44 @@ cargo build --release --bin central
 cargo build --release --bin peripheral
 ```
 
+On Windows, if needed, set:
+
+```powershell
+$env:RUST_MIN_STACK='16777216'
+$env:KEYBOARD_TOML_PATH='D:\Code\lily58-rmk\keyboards\lily58pro\keyboard.toml'
+$env:VIAL_JSON_PATH='D:\Code\lily58-rmk\keyboards\lily58pro\vial.json'
+```
+
 ## Flashing
 
-1. Put device into bootloader (double-tap reset)
-2. Copy `.uf2` file to the mounted USB drive
-3. For split keyboards: flash central and peripheral separately
+1. Put the half into bootloader mode with a double reset tap.
+2. A `NICENANO` drive should appear.
+3. Copy the correct `.uf2` file to the drive.
 
-## Settings Reset
+For this keyboard:
 
-Flash `settings_reset.uf2` to erase all saved keymap/BLE data, then re-flash keyboard firmware.
+- flash `lily58pro_left.uf2` to the left half
+- flash `lily58pro_right.uf2` to the right half
 
-## CI
+## Keymap
 
-Every push builds all devices in parallel via GitHub Actions. UF2 artifacts available as build downloads.
+The current keymap is based on the existing ZMK layout and includes:
 
-## RMK Version
+- Base
+- Lower
+- Raise
+- Adjust
 
-Based on [RMK](https://github.com/HaoboGu/rmk) 0.8.2 with nRF52840 BLE support.
+The `Adjust` layer is intended for Bluetooth/output actions and bootloader access.
+
+## Vial
+
+`Vial` is enabled in the keyboard config and described by:
+
+- `keyboards/lily58pro/keyboard.toml`
+- `keyboards/lily58pro/vial.json`
+
+## Notes
+
+- This repo started from `ergohaven/rmk-eh` and was adapted for `Lily58 Pro`.
+- The dependency `libs/nrf-sdc` is vendored intentionally so CI and local builds do not break on missing submodules.
