@@ -28,8 +28,8 @@ keys = """
 Escape  Kc1   Kc2   Kc3   Kc4   Kc5                     Kc6   Kc7   Kc8   Kc9   Kc0   Grave
 Tab     Q     W     E     R     T                       Y     U     I     O     P     Minus
 LCtrl   A     S     D     F     G                       H     J     K     L     Semicolon Quote
-LShift  Z     LAlt  C     V     B     LeftBracket       RightBracket N M Comma Dot Slash RShift
-        X     Space MO(1) LGui                          Enter MO(2) Backspace PrintScreen
+LShift  Z     X     C     V     B     LeftBracket       RightBracket N M Comma Dot Slash RShift
+        LAlt  LGui  MO(1) Space                         Enter MO(2) Backspace PrintScreen
 """
 
 [[layer]]
@@ -38,8 +38,8 @@ keys = """
 F1      F2      F3      F4      F5      F6              _     _     _     _     _     _
 F7      F8      F9      F10     F11     F12             _     _     _     _     _     _
 _       WM(A,LCtrl) _   _       _       _               _     _     _     _     _     _
-_       WM(Z,LCtrl) _   WM(C,LCtrl) WM(V,LCtrl) _       _     _     _     _     _     _     _     _
-        WM(X,LCtrl) _   MO(1)   _                       _     MO(2) _     _
+_       WM(Z,LCtrl) WM(X,LCtrl) WM(C,LCtrl) WM(V,LCtrl) _       _     _     _     _     _     _     _     _
+        _       _   MO(1)   _                           _     MO(2) _     _
 """
 
 [[layer]]
