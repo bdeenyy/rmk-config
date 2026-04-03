@@ -11,6 +11,7 @@ rmk = { version = "0.8", features = [
     "split",
     "async_matrix",
     "adafruit_bl",
+    "controller",
 ] }
 nrf-sdc = { path = "../../libs/nrf-sdc/nrf-sdc", features = [
     "defmt",
