@@ -6,7 +6,7 @@ use embassy_nrf::twim::{self, Twim};
 use embassy_time::Duration;
 use rmk::{
     channel::{CONTROLLER_CHANNEL, ControllerSub},
-    controller::{Controller, PollingController},
+    controller::Controller,
     event::ControllerEvent,
     macros::rmk_central,
 };
@@ -17,44 +17,46 @@ const OLED_PAGES: usize = 4;
 const OLED_BUF_SIZE: usize = OLED_WIDTH * OLED_PAGES;
 const OLED_I2C_TIMEOUT: Duration = Duration::from_millis(2);
 
-pub struct OledController<'d> {
-    i2c: Twim<'d>,
-    sub: ControllerSub,
+#[derive(Default)]
+struct ScreenState {
     layer: u8,
-    battery: Option<u8>,
-    charging: bool,
-    connection_type: u8,
     ble_profile: u8,
+    connection_type: u8,
+    battery_percent: u8,
+    charging_state: bool,
     peripheral_connected: bool,
     sleeping: bool,
+}
+
+pub struct ScreenController<'d> {
+    i2c: Twim<'d>,
+    sub: ControllerSub,
+    state: ScreenState,
     available: bool,
-    dirty: bool,
     framebuffer: [u8; OLED_BUF_SIZE],
 }
 
-impl<'d> OledController<'d> {
+impl<'d> ScreenController<'d> {
     pub fn new(i2c: Twim<'d>) -> Self {
         Self {
             i2c,
             sub: unwrap!(CONTROLLER_CHANNEL.subscriber()),
-            layer: 0,
-            battery: None,
-            charging: false,
-            connection_type: 1,
-            ble_profile: 0,
-            peripheral_connected: false,
-            sleeping: false,
+            state: ScreenState {
+                connection_type: 1,
+                ..ScreenState::default()
+            },
             available: true,
-            dirty: true,
             framebuffer: [0; OLED_BUF_SIZE],
         }
     }
 
     pub fn init_display(&mut self) {
-        self.available = self.write_commands(&[
-            0xAE, 0xD5, 0x80, 0xA8, 0x1F, 0xD3, 0x00, 0x40, 0x8D, 0x14, 0x20, 0x00, 0xA1, 0xC8,
-            0xDA, 0x02, 0x81, 0x8F, 0xD9, 0xF1, 0xDB, 0x40, 0xA4, 0xA6, 0xAF,
-        ]).is_ok();
+        self.available = self
+            .write_commands(&[
+                0xAE, 0xD5, 0x80, 0xA8, 0x1F, 0xD3, 0x00, 0x40, 0x8D, 0x14, 0x20, 0x00, 0xA1,
+                0xC8, 0xDA, 0x02, 0x81, 0x8F, 0xD9, 0xF1, 0xDB, 0x40, 0xA4, 0xA6, 0xAF,
+            ])
+            .is_ok();
     }
 
     fn write_commands(&mut self, commands: &[u8]) -> Result<(), twim::Error> {
@@ -71,7 +73,7 @@ impl<'d> OledController<'d> {
         Ok(())
     }
 
-    fn flush(&mut self) {
+    fn flush_buffer(&mut self) {
         if !self.available {
             return;
         }
@@ -100,50 +102,49 @@ impl<'d> OledController<'d> {
         }
     }
 
-    fn redraw(&mut self) {
+    fn flush_state_to_display(&mut self) {
         if !self.available {
-            self.dirty = false;
             return;
         }
 
         self.framebuffer.fill(0);
 
-        if self.sleeping {
+        if self.state.sleeping {
             self.draw_text(0, 0, "SLEEP");
             self.draw_text(1, 0, "WAKE KEY");
             self.draw_text(2, 0, "TO RESUME");
             self.draw_text(3, 0, "LILY58");
-            self.flush();
-            self.dirty = false;
+            self.flush_buffer();
             return;
         }
 
         self.draw_text(0, 0, "LILY58 OLED");
         self.draw_text(1, 0, "LAYER ");
-        self.draw_u8(1, 6, self.layer);
+        self.draw_u8(1, 6, self.state.layer);
 
-        match self.connection_type {
+        match self.state.connection_type {
             0 => self.draw_text(2, 0, "USB"),
             _ => {
                 self.draw_text(2, 0, "BLE P");
-                self.draw_u8(2, 6, self.ble_profile.saturating_add(1));
+                self.draw_u8(2, 6, self.state.ble_profile.saturating_add(1));
             }
         }
 
         self.draw_text(3, 0, "BAT ");
-        if self.charging {
+        if self.state.charging_state {
             self.draw_text(3, 4, "CHG");
-        } else if let Some(level) = self.battery {
-            self.draw_u8(3, 4, level);
         } else {
-            self.draw_text(3, 4, "--");
+            self.draw_u8(3, 4, self.state.battery_percent);
         }
 
         self.draw_text(3, 9, "R ");
-        self.draw_text(3, 11, if self.peripheral_connected { "OK" } else { "--" });
+        self.draw_text(
+            3,
+            11,
+            if self.state.peripheral_connected { "OK" } else { "--" },
+        );
 
-        self.flush();
-        self.dirty = false;
+        self.flush_buffer();
     }
 
     fn draw_text(&mut self, page: usize, col: usize, text: &str) {
@@ -176,55 +177,63 @@ impl<'d> OledController<'d> {
     }
 }
 
-impl Controller for OledController<'static> {
+impl Controller for ScreenController<'static> {
     type Event = ControllerEvent;
 
     async fn process_event(&mut self, event: Self::Event) {
         match event {
-            ControllerEvent::Battery(level) => {
-                self.battery = Some(level);
-                self.dirty = true;
-            }
-            ControllerEvent::ChargingState(charging) => {
-                self.charging = charging;
-                self.dirty = true;
-            }
             ControllerEvent::Layer(layer) => {
-                self.layer = layer;
-                self.dirty = true;
+                if layer == self.state.layer {
+                    return;
+                }
+                self.state.layer = layer;
             }
-            ControllerEvent::ConnectionType(kind) => {
-                self.connection_type = kind;
-                self.dirty = true;
+            ControllerEvent::Battery(level) => {
+                if level == self.state.battery_percent {
+                    return;
+                }
+                self.state.battery_percent = level;
             }
             ControllerEvent::BleProfile(profile) => {
-                self.ble_profile = profile;
-                self.dirty = true;
+                if profile == self.state.ble_profile {
+                    return;
+                }
+                self.state.ble_profile = profile;
+            }
+            ControllerEvent::ChargingState(charging) => {
+                if charging == self.state.charging_state {
+                    return;
+                }
+                self.state.charging_state = charging;
+            }
+            ControllerEvent::ConnectionType(kind) => {
+                if kind == self.state.connection_type {
+                    return;
+                }
+                self.state.connection_type = kind;
             }
             ControllerEvent::SplitPeripheral(_, connected) => {
-                self.peripheral_connected = connected;
-                self.dirty = true;
+                if connected == self.state.peripheral_connected {
+                    return;
+                }
+                self.state.peripheral_connected = connected;
             }
             ControllerEvent::Sleep(sleeping) => {
-                self.sleeping = sleeping;
-                self.dirty = true;
+                if sleeping == self.state.sleeping {
+                    return;
+                }
+                self.state.sleeping = sleeping;
             }
-            _ => {}
+            _ => {
+                return;
+            }
         }
+
+        self.flush_state_to_display();
     }
 
     async fn next_message(&mut self) -> Self::Event {
         self.sub.next_message_pure().await
-    }
-}
-
-impl PollingController for OledController<'static> {
-    const INTERVAL: embassy_time::Duration = embassy_time::Duration::from_millis(250);
-
-    async fn update(&mut self) {
-        if self.dirty {
-            self.redraw();
-        }
     }
 }
 
@@ -268,8 +277,8 @@ fn glyph(ch: u8) -> [u8; 5] {
 mod keyboard_central {
     add_interrupt!(TWISPI0 => ::embassy_nrf::twim::InterruptHandler<::embassy_nrf::peripherals::TWISPI0>;);
 
-    #[controller(poll)]
-    fn oled() -> crate::OledController<'static> {
+    #[controller(event)]
+    fn screen_controller() -> crate::ScreenController<'static> {
         static TWIM_TX_BUF: ::static_cell::StaticCell<[u8; 32]> = ::static_cell::StaticCell::new();
         let tx_buf = &mut TWIM_TX_BUF.init([0; 32])[..];
 
@@ -277,9 +286,9 @@ mod keyboard_central {
         config.frequency = ::embassy_nrf::twim::Frequency::K400;
 
         let i2c = ::embassy_nrf::twim::Twim::new(p.TWISPI0, Irqs, p.P0_08, p.P0_06, config, tx_buf);
-        let mut controller = OledController::new(i2c);
+        let mut controller = ScreenController::new(i2c);
         controller.init_display();
-        controller.redraw();
+        controller.flush_state_to_display();
         controller
     }
 }
