@@ -1,0 +1,86 @@
+[keyboard]
+name = "Ergohaven Trackball Royale"
+product_name = "Trackball Royale"
+vendor_id = 0xE126
+product_id = 0x00C3
+manufacturer = "Ergohaven"
+chip = "nrf52840"
+
+[host]
+vial_enabled = true
+unlock_keys = [[0, 0], [0, 1]]
+
+[layout]
+rows = 3
+cols = 2
+matrix_map = """
+(0,0) (0,1)
+(1,0) (1,1)
+(2,0) (2,1)
+"""
+layers = 4
+
+[[layer]]
+name = "Mouse"
+keys = """
+MouseBtn1  MouseBtn2
+MO(2)  MO(1)
+User0  User3
+"""
+
+[[layer]]
+name = "Scroll"
+keys = """
+_  _
+_  _
+_  _
+"""
+
+[[layer]]
+name = "Sniper"
+keys = """
+_  _
+_  _
+_  _
+"""
+
+[[layer]]
+name = "Adjust"
+keys = """
+User8   User9
+User10  User11
+User5   User6
+"""
+
+[ble]
+enabled = true
+battery_adc_pin = "P0_31"
+adc_divider_measured = 782
+adc_divider_total = 1185
+
+[matrix]
+matrix_type = "direct_pin"
+direct_pins = [
+    ["P0_28", "P0_03"],
+    ["P1_11", "P1_10"],
+    ["P0_01", "P0_00"]
+]
+
+[[input_device.pmw3610]]
+name = "trackball0"
+spi.instance = "bitbang0"
+spi.sck = "P0_08"
+spi.mosi = "P0_17"
+spi.miso = "P0_17"
+spi.cs = "P0_13"
+motion = "P0_15"
+cpi = 1000
+swap_xy = true
+invert_x = true
+invert_y = true
+
+[storage]
+clear_storage = false
+
+[workspace]
+members = ["."]

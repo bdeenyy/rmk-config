@@ -1,0 +1,267 @@
+{
+    "name": "Ergohaven Velvet UI",
+    "vendorId": "0xE126",
+    "productId": "0x00BF",
+    "lighting": "none",
+    "matrix": {
+        "rows": 9,
+        "cols": 6
+    },
+    "customKeycodes": [
+        {
+            "name": "BT0",
+            "title": "Bluetooth Profile 0",
+            "shortName": "BT0"
+        },
+        {
+            "name": "BT1",
+            "title": "Bluetooth Profile 1",
+            "shortName": "BT1"
+        },
+        {
+            "name": "BT2",
+            "title": "Bluetooth Profile 2",
+            "shortName": "BT2"
+        },
+        {
+            "name": "BT_NEXT",
+            "title": "Next BT Profile",
+            "shortName": "BT\nNext"
+        },
+        {
+            "name": "BT_PREV",
+            "title": "Previous BT Profile",
+            "shortName": "BT\nPrev"
+        },
+        {
+            "name": "BT_CLR",
+            "title": "Clear BT bond",
+            "shortName": "BT\nClr"
+        },
+        {
+            "name": "BT_TOG",
+            "title": "Toggle BT connection",
+            "shortName": "BT\nTog"
+        },
+        {
+            "name": "BT_PEER",
+            "title": "Clear split peer (hold 5s)",
+            "shortName": "Peer\nClr"
+        },
+        {
+            "name": "SCR_DEC",
+            "title": "Scroll slower (divisor +1)",
+            "shortName": "Scr\nSlw"
+        },
+        {
+            "name": "SCR_INC",
+            "title": "Scroll faster (divisor -1)",
+            "shortName": "Scr\nFst"
+        },
+        {
+            "name": "SNP_DEC",
+            "title": "Sniper slower (divisor +1)",
+            "shortName": "Snp\nSlw"
+        },
+        {
+            "name": "SNP_INC",
+            "title": "Sniper faster (divisor -1)",
+            "shortName": "Snp\nFst"
+        }
+    ],
+    "layouts": {
+        "keymap": [
+            [
+                {
+                    "rx": 1,
+                    "y": 0.4
+                },
+                "0,0",
+                "0,1",
+                {
+                    "y": -0.45
+                },
+                "0,2",
+                {
+                    "y": -0.1
+                },
+                "0,3",
+                {
+                    "y": 0.1
+                },
+                "0,4",
+                {
+                    "y": 0.15
+                },
+                "0,5"
+            ],
+            [
+                {
+                    "y": 0.3
+                },
+                "1,0",
+                "1,1",
+                {
+                    "y": -0.45
+                },
+                "1,2",
+                {
+                    "y": -0.1
+                },
+                "1,3",
+                {
+                    "y": 0.1
+                },
+                "1,4",
+                {
+                    "y": 0.15
+                },
+                "1,5"
+            ],
+            [
+                {
+                    "y": 0.3
+                },
+                "2,0",
+                "2,1",
+                {
+                    "y": -0.45
+                },
+                "2,2",
+                {
+                    "y": -0.1
+                },
+                "2,3",
+                {
+                    "y": 0.1
+                },
+                "2,4",
+                {
+                    "y": 0.15
+                },
+                "2,5"
+            ],
+            [
+                {
+                    "x": 2,
+                    "y": -0.15
+                },
+                "3,2",
+                {
+                    "y": -0.1
+                },
+                "3,3"
+            ],
+            [
+                {
+                    "r": 20,
+                    "rx": 5.3,
+                    "ry": 3.0
+                },
+                "3,4",
+                {
+                    "y": -0.2
+                },
+                "3,5",
+                {
+                    "y": -0.2
+                },
+                "3,1"
+            ],
+            [
+                {
+                    "r": 0,
+                    "rx": 12,
+                    "ry": 0.1
+                },
+                "4,0",
+                {
+                    "y": -0.15
+                },
+                "4,1",
+                {
+                    "y": -0.1
+                },
+                "4,2",
+                {
+                    "y": 0.1
+                },
+                "4,3",
+                {
+                    "y": 0.45
+                },
+                "4,4",
+                "4,5"
+            ],
+            [
+                {
+                    "y": -0.3
+                },
+                "5,0",
+                {
+                    "y": -0.15
+                },
+                "5,1",
+                {
+                    "y": -0.1
+                },
+                "5,2",
+                {
+                    "y": 0.1
+                },
+                "5,3",
+                {
+                    "y": 0.45
+                },
+                "5,4",
+                "5,5"
+            ],
+            [
+                {
+                    "y": -0.3
+                },
+                "6,0",
+                {
+                    "y": -0.15
+                },
+                "6,1",
+                {
+                    "y": -0.1
+                },
+                "6,2",
+                {
+                    "y": 0.1
+                },
+                "6,3",
+                {
+                    "y": 0.45
+                },
+                "6,4",
+                "6,5"
+            ],
+            [
+                {
+                    "x": 2.0,
+                    "y": -0.6
+                },
+                "7,2",
+                {
+                    "y": 0.15
+                },
+                "7,3"
+            ],
+            [
+                {
+                    "r": -20,
+                    "rx": 10.76,
+                    "ry": 3.65
+                },
+                "7,4",
+                {
+                    "y": 0.2
+                },
+                "7,0"
+            ]
+        ]
+    }
+}
