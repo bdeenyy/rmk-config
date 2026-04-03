@@ -3,6 +3,7 @@
 
 use defmt::unwrap;
 use embassy_nrf::twim::{self, Twim};
+use embassy_time::Duration;
 use rmk::{
     channel::{CONTROLLER_CHANNEL, ControllerSub},
     controller::{Controller, PollingController},
@@ -14,6 +15,7 @@ const OLED_ADDR: u8 = 0x3C;
 const OLED_WIDTH: usize = 128;
 const OLED_PAGES: usize = 4;
 const OLED_BUF_SIZE: usize = OLED_WIDTH * OLED_PAGES;
+const OLED_I2C_TIMEOUT: Duration = Duration::from_millis(2);
 
 pub struct OledController<'d> {
     i2c: Twim<'d>,
@@ -25,6 +27,7 @@ pub struct OledController<'d> {
     ble_profile: u8,
     peripheral_connected: bool,
     sleeping: bool,
+    available: bool,
     dirty: bool,
     framebuffer: [u8; OLED_BUF_SIZE],
 }
@@ -41,16 +44,17 @@ impl<'d> OledController<'d> {
             ble_profile: 0,
             peripheral_connected: false,
             sleeping: false,
+            available: true,
             dirty: true,
             framebuffer: [0; OLED_BUF_SIZE],
         }
     }
 
     pub fn init_display(&mut self) {
-        let _ = self.write_commands(&[
+        self.available = self.write_commands(&[
             0xAE, 0xD5, 0x80, 0xA8, 0x1F, 0xD3, 0x00, 0x40, 0x8D, 0x14, 0x20, 0x00, 0xA1, 0xC8,
             0xDA, 0x02, 0x81, 0x8F, 0xD9, 0xF1, 0xDB, 0x40, 0xA4, 0xA6, 0xAF,
-        ]);
+        ]).is_ok();
     }
 
     fn write_commands(&mut self, commands: &[u8]) -> Result<(), twim::Error> {
@@ -60,15 +64,23 @@ impl<'d> OledController<'d> {
         while offset < commands.len() {
             let chunk_len = core::cmp::min(commands.len() - offset, packet.len() - 1);
             packet[1..1 + chunk_len].copy_from_slice(&commands[offset..offset + chunk_len]);
-            self.i2c.blocking_write(OLED_ADDR, &packet[..1 + chunk_len])?;
+            self.i2c
+                .blocking_write_timeout(OLED_ADDR, &packet[..1 + chunk_len], OLED_I2C_TIMEOUT)?;
             offset += chunk_len;
         }
         Ok(())
     }
 
     fn flush(&mut self) {
+        if !self.available {
+            return;
+        }
+
         for page in 0..OLED_PAGES {
-            let _ = self.write_commands(&[0xB0 + page as u8, 0x00, 0x10]);
+            if self.write_commands(&[0xB0 + page as u8, 0x00, 0x10]).is_err() {
+                self.available = false;
+                return;
+            }
             let base = page * OLED_WIDTH;
             let mut packet = [0u8; 17];
             packet[0] = 0x40;
@@ -76,12 +88,24 @@ impl<'d> OledController<'d> {
                 let start = base + chunk * 16;
                 let end = start + 16;
                 packet[1..].copy_from_slice(&self.framebuffer[start..end]);
-                let _ = self.i2c.blocking_write(OLED_ADDR, &packet);
+                if self
+                    .i2c
+                    .blocking_write_timeout(OLED_ADDR, &packet, OLED_I2C_TIMEOUT)
+                    .is_err()
+                {
+                    self.available = false;
+                    return;
+                }
             }
         }
     }
 
     fn redraw(&mut self) {
+        if !self.available {
+            self.dirty = false;
+            return;
+        }
+
         self.framebuffer.fill(0);
 
         if self.sleeping {
